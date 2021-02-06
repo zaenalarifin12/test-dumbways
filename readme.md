@@ -28,4 +28,4 @@
 ### Home
 ![penjualan](./assets/home.png)
 ### Order
-![penjualan](./assets/home.png)
+![penjualan](./assets/pesanan.png)
