@@ -1,0 +1,26 @@
+fitur 
+
+    - login 
+    - register 
+    - home ( menampilkan semua sepeda yang ada stoknya)
+    - sepeda (crud)
+    - keranjang ( ada form kuantity )
+    - pesanan saya (ada tombol batal) 
+    
+- user 
+- sepeda
+
+
+- cart
+    - id 
+    - total 
+    - checkout(true, false) => default false
+
+- cart detail
+    - id 
+    - id cart
+    - id sepeda 
+    - quantity
+    - total 
+
+
