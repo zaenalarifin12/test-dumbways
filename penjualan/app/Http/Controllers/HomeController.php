@@ -17,7 +17,8 @@ class HomeController extends Controller
     {
         $cycle = DB::table("cycle")
                 ->join("merk", "cycle.id_merk", "=", "merk.id")
-                ->select("cycle.*", "merk.name")
+                ->where("cycle.stock", ">", "0")
+                ->select("cycle.*", "merk.name AS merkName")
                 ->get();
 
         return view('home', compact("cycle"));

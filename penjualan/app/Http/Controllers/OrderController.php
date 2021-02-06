@@ -11,54 +11,53 @@ class OrderController extends Controller
     {
         $cycle = DB::table("cycle")->where("id",$request->cycle_id)->first();
 
-        $cartId = DB::table("cart")->insertGetId(
-            [
-                "total" => $cycle->price
-            ]
-        );
+        $cycle = DB::table("cycle")->where("id",$request->cycle_id)->update([
+            "stock" => $cycle->stock - 1
+        ]);
 
         DB::table("cart_product")->insert(
             [
-                "cart_id"   => $cartId,
                 "cycle_id"  => $request->cycle_id,
                 "quantity"  => 1,
-                "total"     => $cycle->price
             ]
         );
 
         return redirect("/cart")->with("msg", "anda berhasil memasukan sepeda ke cart");
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $jumlah = count($request->idCartProduct);
 
-        $total_semua = 0;
-        // update cart product
-        for ($i=0; $i < $jumlah; $i++) { 
+        $cartP = DB::table("cart_product")->where("cart_product.id", $id)->first();
+
+        $cy = DB::table("cycle")->where("id", $cartP->cycle_id)->first();
+
+        // uji , apakah jumlah kuantity > jumlah p
+        if (($cy->stock + $cartP->quantity) >= $request->qty) {
             
-            $cartProduct = DB::table("cart_product")
-                            ->join("cycle", "cart_product.cycle_id", "=", "cycle.id")
-                            ->select(
-                                "cart_product.*",
-                                "cycle.id AS idCycle",
-                                "cycle.price"
-                            )
-                            ->where("cart_product.id", $request->idCartProduct[$i])->first();
-
-            $totalCycle = $cartProduct->price * $request->qty[$i];
-
-            DB::table("cart_product")->where("cart_product.id", $request->idCartProduct[$i])->update([
-                "quantity"  => $request->qty[$i],
-                "total"     => $totalCycle
+            DB::table("cart_product")->where("cart_product.id", $id)->update([
+                "quantity"  => $request->qty,
             ]);
 
-            $total_semua += $totalCycle;
+            $cy = DB::table("cycle")->where("id", $cartP->cycle_id)->update([
+                "stock" => ($cy->stock + $cartP->quantity) - $request->qty
+            ]);
+
         }
 
-        // TODO update cart
+        return redirect("/cart")->with("msg", "keranjang berhasil diperbarui");
+    }
+
+    public function destroy($id)
+    {
+        $p = DB::table("cart_product")->where("id", $id)->first();
+
+        $px = DB::table("cycle")->where("id", $p->cycle_id)->update([
+            "stock" => $p->quantity
+        ]);
+
+        DB::table("cart_product")->where("id", $id)->delete();
 
         return redirect("/cart")->with("msg", "keranjang berhasil diperbarui");
-
     }
 }

@@ -13,12 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', "HomeController@index");
+Route::group(["middleware" => ["auth"]], function(){
 
-Route::get('/cart', "CartController@index");
-Route::post('/cart', "OrderController@store");
-Route::put('/cart', "OrderController@update");
+    Route::get('/', "HomeController@index");
 
+    Route::get('/cart', "CartController@index");
+    Route::post('/cart', "OrderController@store");
+    Route::put('/cart/{id}', "OrderController@update");
+    Route::delete('/cart/{id}', "OrderController@destroy");
+    
+});
 Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');

@@ -5,10 +5,15 @@
 <div class="container pt-4">
     <div class="d-flex justify-content-between">
         <h1>Penjualan Sepeda</h1>
+
         <a href="{{ url("/cart") }}">
             <button class="btn btn-primary">My Cart</button>
         </a>
         
+        <form action="{{ url("/logout") }}" method="post">
+            <button class="btn btn-danger btn-sm" type="submit">Logout</button>
+            @csrf
+        </form>
         
     </div>
 </div>
@@ -20,7 +25,7 @@
         @foreach ($cycle as $item)
             <div class="col py-4">
                 <div class="card" style="width: 18rem;">
-                    <img src="{{ asset("$item->image") }}" class="card-img-top" alt="...">
+                    <img src="{{ asset("sepeda/$item->image") }}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">{{ $item->name }}</h5>
                         <p>Price : {{ $item->price }}</p>
