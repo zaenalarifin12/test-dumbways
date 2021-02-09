@@ -8,9 +8,6 @@
 ## SOAL 2
 ![penjualan](./assets/ss2.png)
 
-## SOAL 3
-![penjualan](./assets/ss2.png)
-
 ## SOAL 4
 
 ### Database
